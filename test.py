@@ -65,7 +65,7 @@ def main():
     parser.add_argument('--split',       type=str, default='test',
                         choices=['train', 'val', 'test', 'complete'],
                         help='Dataset split to evaluate')
-    parser.add_argument('--output_dir',  type=str, default=os.getenv('OUTPUTS_DIR', './outputs'),
+    parser.add_argument('--output_dir',  type=str, default='./outputs',
                         help='Directory to write result files')
     parser.add_argument('--fix_paths',   action='store_true',
                         help='Re-map stored file paths to current doppler_dir')

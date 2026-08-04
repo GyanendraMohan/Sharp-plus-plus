@@ -100,7 +100,7 @@ def main():
         description='Train SHARP++ (Residual CNN + CBAM + Bi-LSTM)',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument('--doppler_dir',  default=os.getenv('DOPPLER_TRACES_DIR', os.path.join(_THIS_DIR, 'doppler_traces')),
+    parser.add_argument('--doppler_dir',  default=os.path.join(_THIS_DIR, 'doppler_traces'),
                         help='Path to doppler_traces/ folder')
     parser.add_argument('--sessions',     default=None,
                         help='Comma-separated session dirs (default: all in doppler_dir)')
@@ -118,7 +118,7 @@ def main():
     parser.add_argument('--lstm_units',   type=int,   default=128)
     parser.add_argument('--dense_units',  type=int,   default=256)
     parser.add_argument('--patience',     type=int,   default=10)
-    parser.add_argument('--output_dir',   default=os.getenv('OUTPUTS_DIR', os.path.join(_THIS_DIR, 'outputs')))
+    parser.add_argument('--output_dir',   default=os.path.join(_THIS_DIR, 'outputs'))
     parser.add_argument('--rebuild',      action='store_true',
                         help='Force rebuild of the window cache')
     args = parser.parse_args()

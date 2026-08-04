@@ -5,7 +5,6 @@ env/
 
 # Environment variables & secrets
 .env
-!.env.example
 
 # Input Data & Spectrogram Traces (do not push input data files)
 doppler_traces/*

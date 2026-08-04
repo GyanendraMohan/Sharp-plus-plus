@@ -479,7 +479,7 @@ def main():
         description='SHARP++ LOEO (Leave-One-Environment-Out) Protocol',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument('--doppler_dir', default=os.getenv('DOPPLER_TRACES_DIR', os.path.join(_THIS_DIR, 'doppler_traces')),
+    parser.add_argument('--doppler_dir', default=os.path.join(_THIS_DIR, 'doppler_traces'),
                         help='Path to doppler_traces/ folder')
     parser.add_argument('--activities', default=DEFAULT_ACTIVITIES,
                         help='Comma-separated activity labels')
@@ -493,8 +493,8 @@ def main():
     parser.add_argument('--lstm_units',  type=int,   default=128)
     parser.add_argument('--dense_units', type=int,   default=256)
     parser.add_argument('--patience',    type=int,   default=10)
-    parser.add_argument('--output_dir',  default=os.getenv('OUTPUTS_DIR', os.path.join(_THIS_DIR, 'outputs', 'loeo')))
-    parser.add_argument('--cache_dir',   default=os.getenv('WINDOWS_CACHE_DIR', os.path.join(_THIS_DIR, 'windows_cache')))
+    parser.add_argument('--output_dir',  default=os.path.join(_THIS_DIR, 'outputs', 'loeo'))
+    parser.add_argument('--cache_dir',   default=os.path.join(_THIS_DIR, 'windows_cache'))
     parser.add_argument('--folds',       default='1,2,3',
                         help='Comma-separated fold numbers to run, e.g. 1,2,3')
     parser.add_argument('--rebuild',     action='store_true',

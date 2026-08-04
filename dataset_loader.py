@@ -36,16 +36,13 @@ import tensorflow as tf
 from collections import defaultdict
 
 
-try:
-    from dotenv import load_dotenv
-    _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-    load_dotenv(os.path.join(_THIS_DIR, '.env'))
-except ImportError:
-    pass
+# ─────────────────────────────────────────────────────────────────────────────
+# Default paths  (relative to SHARP_plus_plus/)
+# ─────────────────────────────────────────────────────────────────────────────
 
 _THIS_DIR     = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_DOPPLER_DIR = os.getenv('DOPPLER_TRACES_DIR', os.path.join(_THIS_DIR, 'doppler_traces'))
-DEFAULT_CACHE_DIR   = os.getenv('WINDOWS_CACHE_DIR', os.path.join(_THIS_DIR, 'windows_cache'))
+DEFAULT_DOPPLER_DIR = os.path.join(_THIS_DIR, 'doppler_traces')
+DEFAULT_CACHE_DIR   = os.path.join(_THIS_DIR, 'windows_cache')
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Activity definitions  (from the SHARP paper)
