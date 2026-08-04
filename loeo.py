@@ -20,7 +20,7 @@ Key protocol rules enforced here:
 
 Usage
 -----
-    cd /Users/gyanendramohanpatel/Desktop/SHARP
+    cd /Users/gyanendramohanpatel/Desktop/SHARP_plus_plus
     source .venv/bin/activate
 
     # Run all 3 folds (default)
@@ -50,7 +50,6 @@ import argparse
 import json
 import os
 import pickle
-import random
 import sys
 import numpy as np
 import tensorflow as tf

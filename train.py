@@ -15,7 +15,7 @@ Optional arguments
                          (default: ./doppler_traces/)
     --sessions     STR   Comma-separated session dirs, e.g. S1a,S1b,S1c
                          (default: all sessions found in doppler_dir)
-    --activities   STR   Comma-separated activity labels  (default: E,L,W,R,J)
+    --activities   STR   Comma-separated activity labels  (default: E,W,R,J,L,S,C,H)
     --window       INT   Time steps per spectrogram window (default: 100)
     --stride       INT   Stride between windows            (default: 5)
     --batch_size   INT   Batch size                        (default: 32)
@@ -123,11 +123,16 @@ def main():
                         help='Force rebuild of the window cache')
     args = parser.parse_args()
 
-    # ── GPU setup ─────────────────────────────────────────────────────────────
-    gpus = tf.config.experimental.list_physical_devices('GPU')
-    print(f"[INFO] GPUs available: {gpus}")
-    for gpu in gpus:
-        tf.config.experimental.set_memory_growth(gpu, True)
+    # ── GPU / Metal setup (Apple Silicon M1/M2/M3/M4) ─────────────────────────
+    gpus = tf.config.list_physical_devices('GPU')
+    if gpus:
+        print(f"[INFO] Metal GPU detected: {gpus}")
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        tf.keras.mixed_precision.set_global_policy('mixed_float16')
+        print("[INFO] Mixed precision (float16) enabled for Metal GPU")
+    else:
+        print("[INFO] GPUs available: [] — running on CPU.")
 
     # ── Config ────────────────────────────────────────────────────────────────
     session_list  = args.sessions.split(',') if args.sessions else None

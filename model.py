@@ -254,9 +254,9 @@ def build_sharp_plus_plus(input_shape, num_classes,
 if __name__ == '__main__':
     import numpy as np
 
-    # Example dimensions matching the SHARP++ spec
-    INPUT_SHAPE = (340, 100, 4)
-    NUM_CLASSES = 5
+    # Actual SHARP dataset dimensions: 100 time steps × 100 freq bins × 4 antennas, 8 classes
+    INPUT_SHAPE = (100, 100, 4)
+    NUM_CLASSES = 8
 
     model = build_sharp_plus_plus(INPUT_SHAPE, NUM_CLASSES)
     model.summary(line_length=90)
