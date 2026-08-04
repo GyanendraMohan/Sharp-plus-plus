@@ -1,0 +1,59 @@
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# Environment variables & secrets
+.env
+!.env.example
+
+# Input Data & Spectrogram Traces (do not push input data files)
+doppler_traces/*
+!doppler_traces/.placeholder
+!doppler_traces/.gitkeep
+windows_cache/
+input_files/
+*.pkl
+*.mat
+*.npz
+*.npy
+
+# Output files & trained models
+outputs/*
+!outputs/.gitkeep
+*.keras
+*.h5
+
+# OS & Editor files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Python cache & build outputs
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
