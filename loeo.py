@@ -64,7 +64,6 @@ from dataset_loader import (
     ACTIVITY_NAMES,
     DEFAULT_ACTIVITIES,
     DEFAULT_DOPPLER_DIR,
-    DEFAULT_CACHE_DIR,
 )
 
 _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -200,11 +199,10 @@ def run_fold(fold_cfg, args):
     print(f"  Train sessions ({len(train_sessions)}): {train_sessions}")
     print(f"  Test  sessions ({len(test_sessions)}): {test_sessions}")
 
-    # ── Prepare training data (75% train / 25% val, no test portion) ──────
-    print(f"\n[Fold {fold_n}] Preparing training environment windows ...")
-    (tr_files, tr_labels,
-     va_files, va_labels,
-     _te_f,   _te_l,
+    # ── Load + index training data into memory (75% train / 25% val) ──────
+    print(f"\n[Fold {fold_n}] Loading training sessions into memory ...")
+    (giant_tr, train_idx,
+     val_idx,  _,
      input_shape) = prepare_dataset(
         doppler_dir   = args.doppler_dir,
         session_list  = train_sessions,
@@ -213,36 +211,35 @@ def run_fold(fold_cfg, args):
         stride        = args.stride,
         train_ratio   = 0.75,
         val_ratio     = 0.25,
-        cache_dir     = args.cache_dir,
-        force_rebuild = args.rebuild,
     )
-    print(f"  Train: {len(tr_files)}  Val: {len(va_files)}")
+    print(f"  Train: {len(train_idx):,}  Val: {len(val_idx):,}")
 
-    # ── Prepare test data (ALL windows from test environment) ──────────────
-    print(f"\n[Fold {fold_n}] Preparing test environment windows ...")
-    (_tr_f, _tr_l,
-     _va_f, _va_l,
-     te_files, te_labels,
-     _shape) = prepare_dataset(
+    if len(train_idx) == 0:
+        print(f"  [ERROR] Empty training set for fold {fold_n}. Skipping.")
+        return None
+
+    # ── Load + index test data into memory (ALL windows) ──────────────────
+    print(f"\n[Fold {fold_n}] Loading test sessions into memory ...")
+    (giant_te, _,
+     _,        test_idx,
+     _) = prepare_dataset(
         doppler_dir   = args.doppler_dir,
         session_list  = test_sessions,
         activity_str  = args.activities,
         window_length = args.window,
         stride        = args.stride,
-        train_ratio   = 0.0,          # no training split from test env
-        val_ratio     = 0.0,          # no validation split from test env
-        cache_dir     = args.cache_dir,
-        force_rebuild = args.rebuild,
+        train_ratio   = 0.0,
+        val_ratio     = 0.0,
     )
-    print(f"  Test : {len(te_files)}")
+    print(f"  Test : {len(test_idx):,}")
 
-    if not te_files:
+    if len(test_idx) == 0:
         print(f"  [ERROR] Test dataset empty for fold {fold_n}. Skipping.")
         return None
 
     # ── Normalization (from training data ONLY) ────────────────────────────
-    print(f"\n[Fold {fold_n}] Computing normalization stats from training data ...")
-    mean, std = compute_norm_stats(tr_files, max_samples=5000)
+    print(f"\n[Fold {fold_n}] Computing normalization stats ...")
+    mean, std = compute_norm_stats(giant_tr, train_idx, args.window, max_samples=5000)
 
     # Save norm stats for reproducibility
     norm_path = os.path.join(fold_dir, 'norm_stats.pkl')
@@ -250,27 +247,23 @@ def run_fold(fold_cfg, args):
         pickle.dump({'mean': mean, 'std': std}, fp, protocol=pickle.HIGHEST_PROTOCOL)
     print(f"  Norm stats → {norm_path}")
 
-    # ── Build tf.data pipelines (normalized) ──────────────────────────────
-    tr_cache = os.path.join(fold_dir, 'cache_train')
-    va_cache = os.path.join(fold_dir, 'cache_val')
-    for p in [tr_cache, va_cache]:
-        _clean_tf_cache(p)
-
+    # ── Build tf.data pipelines (in-memory, GPU-ready) ────────────────────
+    print(f"\n[Fold {fold_n}] Building tf.data pipelines ...")
     ds_train = build_normalized_tf_dataset(
-        tr_files, tr_labels, input_shape, args.batch_size, mean, std,
-        shuffle=True, repeat=True
+        giant_tr, train_idx, args.window, args.batch_size, mean, std,
+        shuffle=True, repeat=True, augment=True
     )
     ds_val = build_normalized_tf_dataset(
-        va_files, va_labels, input_shape, args.batch_size, mean, std,
+        giant_tr, val_idx, args.window, args.batch_size, mean, std,
         shuffle=False, repeat=True
     )
     ds_test = build_normalized_tf_dataset(
-        te_files, te_labels, input_shape, args.batch_size, mean, std,
+        giant_te, test_idx, args.window, args.batch_size, mean, std,
         shuffle=False, repeat=False
     )
 
-    steps_tr = steps(len(tr_files), args.batch_size)
-    steps_va = steps(len(va_files), args.batch_size)
+    steps_tr = steps(len(train_idx), args.batch_size)
+    steps_va = steps(len(val_idx),   args.batch_size)
 
     # ── Build model ────────────────────────────────────────────────────────
     print(f"\n[Fold {fold_n}] Building SHARP++ model ...")
@@ -338,9 +331,15 @@ def run_fold(fold_cfg, args):
         accuracy_score,
     )
 
-    labels_true = np.array(te_labels)
-    preds       = model.predict(ds_test, verbose=1)[:labels_true.shape[0]]
-    labels_pred = np.argmax(preds, axis=1)
+    labels_true = test_idx[:, 1]
+    preds       = model.predict(ds_test, verbose=1)[:len(labels_true)]
+    
+    # ── Decision Fusion ───────────────────────────────────────────────────
+    # Smooth predictions across consecutive windows to remove noise
+    from scipy.ndimage import uniform_filter1d
+    preds_fused = uniform_filter1d(preds, size=11, axis=0)
+    
+    labels_pred = np.argmax(preds_fused, axis=1)
 
     idx          = np.arange(num_classes)
     conf_matrix  = confusion_matrix(labels_true, labels_pred, labels=idx)
@@ -384,9 +383,9 @@ def run_fold(fold_cfg, args):
         'conf_matrix':  conf_matrix,
         'activities':   activities,
         'input_shape':  input_shape,
-        'n_train':      len(tr_files),
-        'n_val':        len(va_files),
-        'n_test':       len(te_files),
+        'n_train':      len(train_idx),
+        'n_val':        len(val_idx),
+        'n_test':       len(test_idx),
     }
     results_path = os.path.join(fold_dir, 'results.pkl')
     with open(results_path, 'wb') as fp:
@@ -485,7 +484,7 @@ def main():
     parser.add_argument('--window',      type=int,   default=100)
     parser.add_argument('--stride',      type=int,   default=5)
     parser.add_argument('--batch_size',  type=int,   default=32)
-    parser.add_argument('--epochs',      type=int,   default=100)
+    parser.add_argument('--epochs',      type=int,   default=25)
     parser.add_argument('--lr',          type=float, default=1e-4)
     parser.add_argument('--weight_decay',type=float, default=1e-4)
     parser.add_argument('--dropout',     type=float, default=0.5)
