@@ -83,7 +83,7 @@ A detailed breakdown of performance across all 8 activity classes.
 | **Jumping** | `J` | 90.95% | 99.67% | 95.11% | 5,225 |
 | **Sitting Down** | `L` | 97.96% | 54.07% | 69.68% | 7,650 |
 | **Standing Up** | `S` | 99.16% | 100.00%| 99.58% | 3,789 |
-| **Falling** | `C` | 44.16% | 92.80% | 59.85% | 3,794 |
+| **Continuous sit/stand** | `C` | 44.16% | 92.80% | 59.85% | 3,794 |
 | **Other/Unknown**| `H` | 0.00% | 0.00% | 0.00% | 3,793 |
 
 ---
@@ -102,5 +102,5 @@ The confusion matrix shows the predicted vs. actual classifications.
 | **J (Jumping)** | 0 | 17 | 0 | **5,208** | 0 | 0 | 0 | 0 |
 | **L (Sitting)** | 0 | 0 | 0 | 23 | **4,136** | 32 | 1,277 | 2,182 |
 | **S (Standing)** | 0 | 0 | 0 | 0 | 0 | **3,789** | 0 | 0 |
-| **C (Falling)** | 0 | 0 | 0 | 0 | 0 | 0 | **3,521** | 273 |
+| **C (Continuous)** | 0 | 0 | 0 | 0 | 0 | 0 | **3,521** | 273 |
 | **H (Other)** | 0 | 0 | 49 | 495 | 74 | 0 | 3,173 | **0** |
