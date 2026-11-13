@@ -1,0 +1,29 @@
+Set,Model,E,L,W,R,J
+S1,Doppler-ResAT (full),100.0,100.0,100.0,100.0,100.0
+S2,Doppler-ResAT (full),100.0,100.0,100.0,99.76,99.52
+S3,Doppler-ResAT (full),100.0,100.0,99.36,100.0,100.0
+S4,Doppler-ResAT (full),99.92,100.0,100.0,99.92,99.82
+S5,Doppler-ResAT (full),100.0,100.0,95.43,99.84,99.63
+S6,Doppler-ResAT (full),98.54,99.84,100.0,99.92,99.82
+S7,Doppler-ResAT (full),100.0,100.0,5.38,99.84,100.0
+S1,without CBAM (attend),100.0,100.0,100.0,100.0,100.0
+S2,without CBAM (attend),100.0,100.0,100.0,99.76,99.88
+S3,without CBAM (attend),100.0,100.0,98.08,100.0,99.81
+S4,without CBAM (attend),99.84,100.0,100.0,99.92,99.82
+S5,without CBAM (attend),100.0,100.0,86.91,72.12,99.63
+S6,without CBAM (attend),99.84,99.76,100.0,100.0,98.41
+S7,without CBAM (attend),100.0,99.82,100.0,100.0,100.0
+S1,without BiLSTM (sequence),100.0,100.0,100.0,100.0,100.0
+S2,without BiLSTM (sequence),100.0,100.0,99.92,49.2,99.76
+S3,without BiLSTM (sequence),100.0,100.0,99.84,100.0,100.0
+S4,without BiLSTM (sequence),100.0,100.0,100.0,1.27,99.82
+S5,without BiLSTM (sequence),100.0,100.0,32.02,15.56,55.96
+S6,without BiLSTM (sequence),49.15,99.84,99.29,4.04,100.0
+S7,without BiLSTM (sequence),99.83,77.9,100.0,55.97,100.0
+S1,SHARP re-run,100.0,100.0,99.14,100.0,96.09
+S2,SHARP re-run,100.0,100.0,100.0,99.84,99.16
+S3,SHARP re-run,99.85,100.0,93.76,100.0,99.81
+S4,SHARP re-run,100.0,100.0,100.0,99.92,86.48
+S5,SHARP re-run,100.0,100.0,78.39,100.0,48.62
+S6,SHARP re-run,99.76,99.92,100.0,100.0,99.11
+S7,SHARP re-run,100.0,99.64,24.31,100.0,99.59

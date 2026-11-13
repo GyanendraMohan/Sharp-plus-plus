@@ -1,0 +1,13 @@
+{
+  "id": "gyanendramohanpatel/doppler-resat-ablation",
+  "title": "Doppler-ResAT ablation",
+  "code_file": "3_ablation.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": ["gyanendramohanpatel/doppler-traces"],
+  "kernel_sources": ["gyanendramohanpatel/doppler-resat-vs-sharp-protocol"],
+  "competition_sources": []
+}

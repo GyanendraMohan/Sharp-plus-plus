@@ -1,0 +1,31 @@
+Fold,Model,true,E,L,W,R,J
+1,Doppler-ResAT,E,11719,4,0,0,2
+1,Doppler-ResAT,L,0,11913,0,0,0
+1,Doppler-ResAT,W,0,6,7636,1049,1169
+1,Doppler-ResAT,R,0,0,4350,3376,2252
+1,Doppler-ResAT,J,4,491,273,0,7513
+1,SHARP re-run (probability fusion),E,11724,0,0,0,1
+1,SHARP re-run (probability fusion),L,2700,9209,4,0,0
+1,SHARP re-run (probability fusion),W,0,4,8473,6,1377
+1,SHARP re-run (probability fusion),R,0,3,1578,7102,1295
+1,SHARP re-run (probability fusion),J,6,1546,11,12,6706
+1,"SHARP re-run (vote fusion, no smoothing)",E,11725,0,0,0,0
+1,"SHARP re-run (vote fusion, no smoothing)",L,2404,9509,0,0,0
+1,"SHARP re-run (vote fusion, no smoothing)",W,0,0,8433,74,1353
+1,"SHARP re-run (vote fusion, no smoothing)",R,0,0,1087,7830,1061
+1,"SHARP re-run (vote fusion, no smoothing)",J,0,984,171,57,7069
+2,Doppler-ResAT,E,2179,0,0,0,3
+2,Doppler-ResAT,L,0,1813,2,0,408
+2,Doppler-ResAT,W,0,0,2223,0,0
+2,Doppler-ResAT,R,0,0,3,2221,2
+2,Doppler-ResAT,J,0,0,0,0,1496
+2,SHARP re-run (probability fusion),E,2182,0,0,0,0
+2,SHARP re-run (probability fusion),L,1,2222,0,0,0
+2,SHARP re-run (probability fusion),W,0,0,2223,0,0
+2,SHARP re-run (probability fusion),R,0,0,0,2226,0
+2,SHARP re-run (probability fusion),J,0,0,0,15,1481
+2,"SHARP re-run (vote fusion, no smoothing)",E,2182,0,0,0,0
+2,"SHARP re-run (vote fusion, no smoothing)",L,0,2213,0,0,10
+2,"SHARP re-run (vote fusion, no smoothing)",W,0,0,2223,0,0
+2,"SHARP re-run (vote fusion, no smoothing)",R,0,0,0,2226,0
+2,"SHARP re-run (vote fusion, no smoothing)",J,0,0,0,16,1480

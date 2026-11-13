@@ -1,0 +1,7 @@
+Model,Seed,Epoch used,Train stride
+Doppler-ResAT,0,25,17
+Doppler-ResAT,1,25,17
+Doppler-ResAT,2,25,17
+SHARP,0,22,30
+SHARP,1,25,30
+SHARP,2,25,30
