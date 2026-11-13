@@ -47,9 +47,9 @@ Kaggle CLI (`kaggle kernels push -p <folder>`); replace the username and dataset
 
 | Folder | Contents |
 |---|---|
-| `results/sharp_protocol/` | `exp1_main.csv` (mean ± std over 3 seeds, smoothed and [unsmoothed]), per-seed results, antenna subsets, confusion matrices, test-window counts, epochs, and per-window predictions (`*.pkl`) |
-| `results/loeo/` | `loeo_comparison.csv`, confusion matrices, per-class recall plot, predictions |
-| `results/ablation/` | `ablation_main.csv`, `ablation_per_class.csv`, predictions |
+| `results/sharp_protocol/` | `exp1_main.csv` (mean ± std over 3 seeds, smoothed and [unsmoothed]), per-seed results, antenna subsets, confusion matrices, test-window counts, epochs |
+| `results/loeo/` | `loeo_comparison.csv`, confusion matrices, per-class recall plot |
+| `results/ablation/` | `ablation_main.csv`, `ablation_per_class.csv` |
 
 Mean recall (%) under SHARP's protocol, mean of 3 seeds (`results/sharp_protocol/exp1_main.csv`):
 
@@ -65,6 +65,5 @@ LOEO, same folds and windows (`results/loeo/loeo_comparison.csv`), mean recall (
 | SHARP re-run | 83.08 | 99.79 |
 | Doppler-ResAT | 80.39 | 96.24 |
 
-Model weights (about 160 MB each) are not included; they exceed GitHub's file size limit.
-The `*.pkl` files hold every test window's per-antenna outputs, so all tables can be
-recomputed without retraining.
+Model weights (about 160 MB each) and the per-window prediction files (`*.pkl`, ignored by this
+repository's `.gitignore`) are not included. Running a notebook writes both to `results/`.
